@@ -1,0 +1,15 @@
+﻿@using APIProject.Models
+@{
+    ViewData["Title"] = "FavoritesList";
+}
+@model List<FavMovie>
+
+<h1>FavoritesList</h1>
+
+@{
+    foreach (FavMovie movie in Model)
+    {
+    <p>@movie.Title</p>
+    }
+ }
+
