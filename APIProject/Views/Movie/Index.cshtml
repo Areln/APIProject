@@ -5,13 +5,35 @@
 @model MovieRoot
 <h1>Home Page</h1>
 
-@{
-    if (Model != null)
-    {
-        @Model.Title
-    }
+<form action="../Movie/Index" method="post">
+    <input type="text" name="searchQuery" value="" />
+    <input type="submit" value="Search!" />
 
+</form>
+
+@if(Model.Title != null)
+{
+    <table class="table-borderless">
+        <tr>
+            <th>Title</th>
+            <th>ReleaseYear</th>
+            <th>Genre</th>
+            <th>Runtime</th>
+            <th>Actor</th>
+            <th>Plot</th>
+        </tr>
+        <tr>
+            <td>@Model.Title</td>
+            <td>@Model.Released</td>
+            <td>@Model.Genre</td>
+            <td>@Model.Runtime</td>
+            <td>@Model.Actors</td>
+            <td>@Model.Plot</td>
+        </tr>
+
+    </table>
 }
+
 
 
 
