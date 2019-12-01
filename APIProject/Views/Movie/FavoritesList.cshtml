@@ -1,15 +1,37 @@
 ﻿@using APIProject.Models
+@using System.Security.Claims
 @{
     ViewData["Title"] = "FavoritesList";
 }
-@model List<FavMovie>
+@model List<FavList>
 
 <h1>FavoritesList</h1>
 
-@{
-    foreach (FavMovie movie in Model)
-    {
-    <p>@movie.Title</p>
+<table class="table table-bordered table-responsive table-hover">
+    <tr>
+        <th>Title</th>
+        <th>ReleaseYear</th>
+        <th>Genre</th>
+        <th>Runtime</th>
+        <th>Actor</th>
+        <th>Plot</th>
+    </tr>
+    @{
+        foreach (FavList movie in Model)
+        {
+            if (User.FindFirst(ClaimTypes.NameIdentifier).Value == movie.UserId)
+            {
+                <tr>
+                    <td>@movie.Title</td>
+                    <td>@movie.ReleaseYear</td>
+                    <td>@movie.Genre</td>
+                    <td>@movie.Runtime</td>
+                    <td>@movie.Actor</td>
+                    <td>@movie.Plot</td>
+                </tr>
+            }
+        }
     }
- }
+</table>
+
 

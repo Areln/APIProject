@@ -15,7 +15,7 @@ namespace APIProject.Models
         {
         }
 
-        public virtual DbSet<FavMovie> FavList { get; set; }
+        public virtual DbSet<FavList> FavList { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -28,7 +28,7 @@ namespace APIProject.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<FavMovie>(entity =>
+            modelBuilder.Entity<FavList>(entity =>
             {
                 entity.Property(e => e.Actor).HasMaxLength(100);
 
@@ -39,6 +39,10 @@ namespace APIProject.Models
                 entity.Property(e => e.Runtime).HasMaxLength(20);
 
                 entity.Property(e => e.Title)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.UserId)
                     .IsRequired()
                     .HasMaxLength(50);
             });

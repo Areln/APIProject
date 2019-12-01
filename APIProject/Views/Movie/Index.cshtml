@@ -1,35 +1,51 @@
 ﻿
+@using System.Security.Claims;
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+
 @{
     ViewData["Title"] = "Index";
 }
-@model MovieRoot
+@model SearchResultsRoot
 <h1>Home Page</h1>
 
-<form action="../Movie/Index" method="post">
+<form action="../Movie/SearchMovies" method="get">
     <input type="text" name="searchQuery" value="" />
     <input type="submit" value="Search!" />
 
 </form>
 
-@if(Model.Title != null)
+@if (Model != null)
 {
-    <table class="table-borderless">
+    <table class="table table-bordered table-responsive table-hover">
         <tr>
             <th>Title</th>
             <th>ReleaseYear</th>
-            <th>Genre</th>
-            <th>Runtime</th>
-            <th>Actor</th>
-            <th>Plot</th>
+            <th>POSTER</th>
+            <th></th>
         </tr>
-        <tr>
-            <td>@Model.Title</td>
-            <td>@Model.Released</td>
-            <td>@Model.Genre</td>
-            <td>@Model.Runtime</td>
-            <td>@Model.Actors</td>
-            <td>@Model.Plot</td>
-        </tr>
+        @{
+            foreach (var item in Model.Search)
+            {
+
+                <tr>
+                    <td>@item.Title</td>
+                    <td>@item.Year</td>
+                    <td><img src="@item.Poster" /></td>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <td><a class="btn-primary" href="../Movie/AddToFavorites?MovieId=@item.imdbID&UserId=@User.FindFirst(ClaimTypes.NameIdentifier).Value">Add To Favorites</a></td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+
+                </tr>
+            }
+        }
+
 
     </table>
 }

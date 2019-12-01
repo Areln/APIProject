@@ -3,10 +3,9 @@ using System.Collections.Generic;
 
 namespace APIProject.Models
 {
-    public partial class FavMovie
+    public partial class FavList
     {
-
-        public FavMovie(string title, int releaseYear, string genre, string runtime, string actor, string plot) 
+        public FavList(string title, int releaseYear, string genre, string runtime, string actor, string plot, string userId)
         {
             Title = title;
             ReleaseYear = releaseYear;
@@ -14,6 +13,7 @@ namespace APIProject.Models
             Runtime = runtime;
             Actor = actor;
             Plot = plot;
+            UserId = userId;
         }
 
         public int Id { get; set; }
@@ -23,5 +23,6 @@ namespace APIProject.Models
         public string Runtime { get; set; }
         public string Actor { get; set; }
         public string Plot { get; set; }
+        public string UserId { get; set; }
     }
 }
