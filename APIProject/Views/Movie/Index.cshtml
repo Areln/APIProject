@@ -1,13 +1,14 @@
 ﻿
 @using System.Security.Claims;
 @using Microsoft.AspNetCore.Identity
+@using APIProject.Models
 
 @inject SignInManager<IdentityUser> SignInManager
 
 @{
     ViewData["Title"] = "Index";
 }
-@model SearchResultsRoot
+@model SearchListModel
 <h1>Home Page</h1>
 
 <form action="../Movie/SearchMovies" method="get">
@@ -17,37 +18,53 @@
 </form>
 
 @if (Model != null)
-{
-    <table class="table table-bordered table-responsive table-hover">
-        <tr>
-            <th>Title</th>
-            <th>ReleaseYear</th>
-            <th>POSTER</th>
-            <th></th>
-        </tr>
+{<table>
         @{
-            foreach (var item in Model.Search)
-            {
-
-                <tr>
-                    <td>@item.Title</td>
-                    <td>@item.Year</td>
-                    <td><img src="@item.Poster" /></td>
-                    @if (SignInManager.IsSignedIn(User))
-                    {
-                        <td><a class="btn-primary" href="../Movie/AddToFavorites?MovieId=@item.imdbID&UserId=@User.FindFirst(ClaimTypes.NameIdentifier).Value">Add To Favorites</a></td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
-
-                </tr>
-            }
+            int counter = 0;
         }
+        @for (int x = 0; x < 5; x++)
+        {
+
+            <tr>
 
 
+                @for (int i = 0; i < 2; i++)
+                {
+                    <td>
+                        <table>
+                            <tr>
+                                <td valign="top">
+                                    <ul>
+                                        <li>@Model.Results.Search[counter].Title</li>
+                                        <li>@Model.Results.Search[counter].Year</li>
+                                        @if (SignInManager.IsSignedIn(User))
+                                        {
+                                            <li>
+
+                                                @if (!Model.TitleList.Contains(Model.Results.Search[counter].Title))
+                                                {
+                                                    <a class="btn-primary" href="../Movie/AddToFavorites?MovieId=@Model.Results.Search[counter].imdbID&UserId=@User.FindFirst(ClaimTypes.NameIdentifier).Value">Add To Favorites</a>
+                                                }
+                                                else
+                                                {
+                                                    <p>Already in Favorites.</p>
+                                                }
+                                            </li>
+                                        }
+
+                                    </ul>
+                                </td>
+                                <td><img src="@Model.Results.Search[counter].Poster" /></td>
+                            </tr>
+                        </table>
+                    </td>
+                    counter++;
+                }
+            </tr>
+        }
     </table>
+
+
 }
 
 

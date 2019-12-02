@@ -33,21 +33,40 @@ namespace APIProject.Controllers
             var movie = await response.Content.ReadAsAsync<MovieRoot>();
 
             FavList newFavMovie = new FavList(movie.Title, int.Parse(movie.Year), movie.Genre, movie.Runtime, movie.Actors, movie.Plot, UserId);
-
-            _context.FavList.Add(newFavMovie);
-            _context.SaveChanges();
-
+			var match = _context.FavList.ToList().Where(p => p.Title == newFavMovie.Title);
+			if (match.Count() != 1)
+			{
+				_context.FavList.Add(newFavMovie);
+				_context.SaveChanges();
+			}
             return View("Index");
         }
+		public IActionResult RemoveFromFavorites(int ListId)
+		{
+			var movie = _context.FavList.Find(ListId);
+			_context.FavList.Remove(movie);
+			_context.SaveChanges();
+			return RedirectToAction("FavoritesList");
+		}
         [HttpGet]
-        public async Task<IActionResult> SearchMovies(string searchQuery)
+        public async Task<IActionResult> SearchMovies(string searchQuery, int pageNumber)
         {
 
-
-            var response = await _client.GetAsync($"?s={searchQuery}&apikey=ab73b87f");
+			if (pageNumber == 0)
+			{
+				pageNumber = 1;
+			}
+			var response = await _client.GetAsync($"?s={searchQuery}&page={pageNumber}&apikey=ab73b87f");
             var movies = await response.Content.ReadAsAsync<SearchResultsRoot>();
+			List<string> tempList = new List<string>();
+			foreach (var item in _context.FavList)
+			{
+				tempList.Add(item.Title);
+			}
+			
+			SearchListModel newListModel = new SearchListModel(movies, tempList);
 
-            return View("Index", movies);
+            return View("Index", newListModel);
         }
 
         public IActionResult FavoritesList()

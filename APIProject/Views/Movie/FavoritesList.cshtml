@@ -21,17 +21,20 @@
         {
             if (User.FindFirst(ClaimTypes.NameIdentifier).Value == movie.UserId)
             {
-                <tr>
-                    <td>@movie.Title</td>
-                    <td>@movie.ReleaseYear</td>
-                    <td>@movie.Genre</td>
-                    <td>@movie.Runtime</td>
-                    <td>@movie.Actor</td>
-                    <td>@movie.Plot</td>
-                </tr>
+        <tr>
+            <td>@movie.Title</td>
+            <td>@movie.ReleaseYear</td>
+            <td>@movie.Genre</td>
+            <td>@movie.Runtime</td>
+            <td>@movie.Actor</td>
+            <td>@movie.Plot</td>
+            <td><a class="btn-primary" href="../Movie/RemoveFromFavorites?ListId=@movie.Id">Remove From Favorites</a></td>
+        </tr>
             }
         }
     }
 </table>
+
+
 
 
